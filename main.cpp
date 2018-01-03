@@ -10,6 +10,15 @@
 
 using namespace std;
 
+//#################################
+// Méthodes d'entrée des Instances
+
+
+
+//###########################
+// Algorithmes de résolution
+
+//List Scheduling Algorithm
 Solution LSA(Instance instance)
 {
 	Solution solution(instance);
@@ -48,6 +57,7 @@ Solution LSA(Instance instance)
 	return solution;
 }
 
+//Largest Processing Time algorithm
 Solution LPT(Instance instance)
 {
 	std::sort (instance.tasks.begin(), instance.tasks.end(), greater<int>());
@@ -57,12 +67,14 @@ Solution LPT(Instance instance)
 	return solution;
 }
 
-
+//################################
+// Code client
 
 int main(){
-  /* initialize random seed: */
+	// initialize random seed (not useful yet)
 	srand (time(NULL));
-
+	
+	// initializing an instance
 	int tasksList[] = {2,7,1,3,2,6,2,3,6,2,5};
 	vector<int> tasks(tasksList, tasksList+11);
 	int nbMach=3;

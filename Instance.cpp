@@ -5,12 +5,11 @@
 
 using namespace std;
 
-class Instance
+struct Instance
 {
-	public:
-		int nbMachines;
-		vector<int> tasks;
-		
-		Instance(int nbMach, vector<int> task): nbMachines(nbMach), tasks(task)
-		{}
+	int nbMachines;
+	vector<int> tasks;
+	
+	Instance(int nbMach, vector<int> task): nbMachines(nbMach), tasks(task)
+	{}
 };
