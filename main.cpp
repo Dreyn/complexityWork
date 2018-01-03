@@ -1,4 +1,5 @@
-#include <iostream>
+#include <iostream> //cout
+#include <sstream> //istringstream
 #include <string>
 #include <vector>
 #include <time.h>
@@ -13,7 +14,28 @@ using namespace std;
 //#################################
 // Méthodes d'entrée des Instances
 
-
+Instance instanceCreation(string input)
+{
+	istringstream iss(input); //will enable to extract words (or numbers) separated by spaces
+	
+	vector<int> tasks;
+	int nbMach;
+	
+	string s;
+	int n;
+	
+	iss >> nbMach; // >> operator for istringstream : "Extract formatted input"
+	
+	while(iss.tellg() >= 0) //iss.tellg() : "Get position in input sequence"
+	{
+		iss >> s;
+		iss >> n;
+		
+		tasks.push_back(n);
+	}
+	
+	return Instance(nbMach, tasks);
+}
 
 //###########################
 // Algorithmes de résolution
@@ -75,11 +97,16 @@ int main(){
 	srand (time(NULL));
 	
 	// initializing an instance
+	/*
 	int tasksList[] = {2,7,1,3,2,6,2,3,6,2,5};
 	vector<int> tasks(tasksList, tasksList+11);
 	int nbMach=3;
 	
 	Instance inst(nbMach, tasks);
+	*/
+	
+	string input = "3 : 2 : 7 : 1 : 3 : 2 : 6 : 2 : 3 : 6 : 2 : 5";
+	Instance inst = instanceCreation(input);
 	
 	//LSA Test
 	Solution sol = LSA(inst);
