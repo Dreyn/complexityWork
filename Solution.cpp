@@ -15,7 +15,7 @@ struct Solution
 	vector<int> machinesCharge;
 	
 	
-	Solution(Instance & instance): tasksWeight(instance.tasks),
+	Solution(Instance instance): tasksWeight(instance.tasks),
 								   assign(instance.tasks.size()),
 								   schedule(instance.nbMachines, vector<int>()),
 								   machinesCharge(instance.nbMachines, 0)
