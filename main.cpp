@@ -21,18 +21,21 @@ Instance instanceCreation(string input)
 	
 	vector<int> tasks;
 	int nbMach;
+	int nbTasks;
 	
 	string s;
-	int n;
+	int t;
 	
 	iss >> nbMach; // >> operator for istringstream : "Extract formatted input"
+	iss >> s;
+	iss >> nbTasks; //ne servira à rien \o/
 	
 	while(iss.tellg() >= 0) //iss.tellg() : "Get position in input sequence"
 	{
 		iss >> s;
-		iss >> n;
+		iss >> t;
 		
-		tasks.push_back(n);
+		tasks.push_back(t);
 	}
 	
 	return Instance(nbMach, tasks);
@@ -53,6 +56,7 @@ Solution LSA(Instance instance) //instance pass by reference
 	vector<int> & assign = solution.assign;	
 	vector<vector<int> > & schedule = solution.schedule;
 	vector<int> & machineCharge = solution.machinesCharge;
+	int & finalTime = solution.finalTime;
 	
 	//beggining
 	int minimalCharge = 0;
@@ -77,6 +81,12 @@ Solution LSA(Instance instance) //instance pass by reference
 		}
 	}
 	
+	finalTime=0;
+	for(int i=0; i<machineCharge.size(); ++i){
+		if(machineCharge[i]>finalTime)
+			finalTime = machineCharge[i];
+	}
+	
 	return solution;
 }
 
@@ -97,7 +107,7 @@ void generateFromFile(string file); //forward declaration
 void generateFromInput();
 void generateFromRandom();
 //procédure suivante ?
-void resultDisplay(Solution solution);
+void singleInstance(Instance inst);
 
 void userInterface(int argc, char* argv[])
 {
@@ -158,16 +168,19 @@ void generateFromInput()
 {
 	string input;
 	
-	cout << "Veuillez entrer une chaine de la forme \"m : t1 : t2 : ... : tn\"," << endl;
-	cout << " où m est le numéro de la machine et t1, t2... tn sont les poids de vos n tâches." << endl;
+	cout << "Veuillez entrer une chaine de la forme \"m : n : t1 : t2 : ... : tn\"," << endl;
+	cout << " où m est le numéro de la machine, n le nombre de tâches et t1, t2... tn sont les poids de vos n tâches." << endl;
 	cout << " Ne mettez pas de guillemets, mettez un séparateur et des espaces." << endl;
 	cout << " Et ne vous gourrez pas, on ne va pas vérifier derrière vous !" << endl;
 	
-	getline(cin, input);
+	getline(cin,input);
+	getline(cin,input); //doit être mis deux fois pour fonctionner... WTF!?
 	
 	Instance inst = instanceCreation(input);
 	
-	//procédure suivante...		
+	//procédure suivante...
+	
+	singleInstance(inst);
 }
 
 void generateFromFile(string file)
@@ -186,6 +199,8 @@ void generateFromFile(string file)
 		cout << "Une instance a été créé." << endl;
 		
 		//procédure suivante...
+		
+		singleInstance(inst);
 	}
 	else cout << "Unable to open file"; 
 	
@@ -197,10 +212,24 @@ void generateFromRandom()
 }
 
 
-void resultDisplay(Solution solution)
+void singleInstance(Instance instance)
 {
+	Solution solLSA, solLPT, solMyAlgo;
+	
+	solLSA = LSA(instance);
+	solLPT = LPT(instance);
+	//solMyAlgo = MyAlgo(instance);
+	
+	cout << endl << "Résultat des algorithmes :" << endl << endl;
+	
+	cout << "Borne inférieure \"maximale\" = " << instance.longestTask << endl;
+	cout << "Borne inférieure \"moyenne\"  = " << instance.sumPerMachine << endl;
+	cout << "Résultat LSA = " << solLSA.finalTime << endl;
+	cout << "Résultat LPT = " << solLPT.finalTime << endl;
+	cout << "Résultat MyAlgo = " << "soon released..." << endl;
 	
 }
+
 
 //#############
 // Code client
@@ -212,7 +241,9 @@ int main(int argc, char* argv[]){
 	cout << "Bonjour," << endl;
 	cout << "Ce programme consiste à résoudre une instance donnée." << endl;
 	
-	string input = "3 : 2 : 7 : 1 : 3 : 2 : 6 : 2 : 3 : 6 : 2 : 5";
+	userInterface(argc, argv);
+	
+	/*string input = "3 : 11 : 2 : 7 : 1 : 3 : 2 : 6 : 2 : 3 : 6 : 2 : 5";
 	
 	Instance inst = instanceCreation(input);
 	
@@ -224,7 +255,7 @@ int main(int argc, char* argv[]){
 	//LPT Test
 	Solution sol2 = LPT(inst);
 	
-	sol2.display();
+	sol2.display();*/
 	
 	
 	return 0;

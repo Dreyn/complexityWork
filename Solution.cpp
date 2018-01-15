@@ -13,7 +13,9 @@ struct Solution
 	
 	vector<vector<int> > schedule; //schedule[i][j]: jth task of the machine i
 	vector<int> machinesCharge;
+	int finalTime;
 	
+	Solution(){} //constructeur à vide
 	
 	Solution(Instance instance): tasksWeight(instance.tasks),
 								   assign(instance.tasks.size()),
