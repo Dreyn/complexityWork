@@ -208,6 +208,9 @@ void generateFromFile(string file)
 
 void generateFromRandom()
 {
+	//############################
+	// Configurating generation :
+	
 	int k, m, n, min, max;
 	
 	cout << "Vous allez saisir le nombre d'instance à créer, le nombre de machines et de tâches par instance, et les bornes minimales et maximales des durées des tâches." << endl;
@@ -223,6 +226,9 @@ void generateFromRandom()
 	cout << "Durée maximale des tâches : max = ";
 	cin >> max;
 	
+	//########################
+	// Generating instances :
+	
 	vector< vector<int> > taskLists = vector< vector<int> >(k, vector<int>(n));
 	vector<Instance> instances = vector<Instance>(k);
 	
@@ -233,10 +239,83 @@ void generateFromRandom()
 			taskLists[i][j] = (rand()%max)+min;
 		}
 		instances[i] = Instance(m, taskLists[i]);
-		
-		instances[i].display();
 	}
 	
+	//########################
+	// Generating solutions :
+	
+	vector<Solution> solLSA = vector<Solution>(k);
+	vector<Solution> solLPT = vector<Solution>(k);
+	//vector<Solution> solMyAlgo = vector<Solution>(k);
+	
+	double timeLSA, timeLPT, timeMyAlgo;
+	double longestTask, sumPerMach, minimalBound;
+	
+	double sumOfRatioLSA = 0;
+	double sumOfRatioLPT = 0;
+	double sumOfRatioMyAlgo = 0;
+	double avgOfRatioLSA, avgOfRatioLPT, avgOfRatioMyAlgo;
+	
+	for(int i=0; i<k; ++i)
+	{
+		solLSA[i] = LSA(instances[i]);
+		solLPT[i] = LPT(instances[i]);
+		//solMyAlgo[i] = MyAlgo(Instance[i]);
+		
+		timeLSA = (double)solLSA[i].finalTime;
+		timeLPT = (double)solLPT[i].finalTime;
+		//timeMyAlgo = (double)solMyAlgo[i].finalTime;
+		
+		longestTask = (double)instances[i].longestTask;
+		sumPerMach = (double)instances[i].sumPerMachine;
+		minimalBound = (longestTask > sumPerMach) ? longestTask : sumPerMach;
+		
+		sumOfRatioLSA += timeLSA/minimalBound;
+		sumOfRatioLPT += timeLPT/minimalBound;
+		sumOfRatioMyAlgo += timeMyAlgo/minimalBound;
+	}
+	
+	avgOfRatioLSA = sumOfRatioLSA/k;
+	avgOfRatioLPT = sumOfRatioLPT/k;
+	//avgOfRatioMyAlgo = sumOfRatioMyAlgo/k;
+	
+	//#######################
+	// Generating the file :
+	
+	string fileName;
+	
+	cout << endl << "Les instances ont été générées et traitées." << endl;
+	cout << "Les résultats seront mis dans un fichier." << endl;
+	cout << "Entrez le nom du fichier à créer :" << endl;
+	
+	cin >> fileName;
+	
+	ofstream outfile(fileName.c_str());
+	
+	outfile << k << " instances à " << m << " machines et " << n << " tâches.\n\n";
+	
+	for(int i=0; i<k; ++i)
+	{
+		outfile << "Tâches";
+		for(int j=0; j<n; ++j){
+			outfile << " : " << instances[i].tasks[j];
+		}
+		outfile << endl;
+		
+		outfile << "Borne inférieure \"maximale\" = " << instances[i].longestTask << endl;
+		outfile << "Borne inférieure \"moyenne\"  = " << instances[i].sumPerMachine << endl;
+		outfile << "Résultat LSA = " << solLSA[i].finalTime << endl;
+		outfile << "Résultat LPT = " << solLPT[i].finalTime << endl;
+		outfile << "Résultat MyAlgo = " << "soon released..." << endl;
+		
+		outfile << "=====================================" << endl;
+	}
+	
+	outfile << "Ratio d'approximation moyen de LSA = " << avgOfRatioLSA << endl;
+	outfile << "Ratio d'approximation moyen de LPT = " << avgOfRatioLPT << endl;
+	outfile << "Ratio d'approximation moyen de MyAlgo = soon released..." << endl;
+	
+	outfile.close();
 	
 }
 

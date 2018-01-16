@@ -11,7 +11,7 @@ struct Instance
 	vector<int> tasks;
 	
 	int longestTask;
-	int sumPerMachine;
+	double sumPerMachine;
 	
 	Instance(){} //constructeur à vide
 	
@@ -30,7 +30,7 @@ struct Instance
 			sumOfTask += t;
 		}
 		
-		sumPerMachine = sumOfTask/nbMach;
+		sumPerMachine = double(sumOfTask)/double(nbMach);
 	}
 	
 	void display(){
