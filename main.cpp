@@ -141,7 +141,7 @@ void userInterface(int argc, char* argv[])
 					
 					break;
 				case 3 :
-					void generateFromRandom();
+					generateFromRandom();
 					
 					break;
 				default :
@@ -208,7 +208,36 @@ void generateFromFile(string file)
 
 void generateFromRandom()
 {
-	cout << "Génération aléatoire à implémenter..." << endl;
+	int k, m, n, min, max;
+	
+	cout << "Vous allez saisir le nombre d'instance à créer, le nombre de machines et de tâches par instance, et les bornes minimales et maximales des durées des tâches." << endl;
+	
+	cout << "Nombre d'instance k = ";
+	cin >> k;
+	cout << "Nombre de machines m = ";
+	cin >> m;
+	cout << "Nombre de tâches t = ";
+	cin >> n;
+	cout << "Durée minimale des tâches : min = ";
+	cin >> min;
+	cout << "Durée maximale des tâches : max = ";
+	cin >> max;
+	
+	vector< vector<int> > taskLists = vector< vector<int> >(k, vector<int>(n));
+	vector<Instance> instances = vector<Instance>(k);
+	
+	for(int i=0; i<k; ++i)
+	{
+		for(int j=0; j<n; ++j)
+		{
+			taskLists[i][j] = (rand()%max)+min;
+		}
+		instances[i] = Instance(m, taskLists[i]);
+		
+		instances[i].display();
+	}
+	
+	
 }
 
 

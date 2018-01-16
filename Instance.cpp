@@ -31,6 +31,16 @@ struct Instance
 		}
 		
 		sumPerMachine = sumOfTask/nbMach;
+	}
+	
+	void display(){
 		
+		cout << endl << "Displaying instance," << endl;
+		cout << "Number of machines : " << nbMachines << endl;
+		for(int i=0; i<tasks.size(); ++i){
+			cout << tasks[i] << "\t";
+		}
+		cout << endl << "Longest task : " << longestTask << endl;
+		cout << "Sum of tasks divided by machines : " << sumPerMachine << endl;
 	}
 };
