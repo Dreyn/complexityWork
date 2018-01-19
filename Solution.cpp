@@ -34,7 +34,7 @@ struct Solution
 			}
 			cout << endl;
 		}
-		
+		cout << endl << "Final time = " << finalTime << endl;
 	}
 		
 };
