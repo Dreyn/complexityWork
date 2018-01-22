@@ -197,7 +197,7 @@ void generateFromRandom()
 	{
 		for(int j=0; j<n; ++j)
 		{
-			taskLists[i][j] = (rand()%(max-min))+min;
+			taskLists[i][j] = (rand()%(max-min+1))+min;
 		}
 		instances[i] = Instance(m, taskLists[i]);
 	}
